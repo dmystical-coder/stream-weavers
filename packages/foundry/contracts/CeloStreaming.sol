@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 /**
  * @title CeloStreaming
  * @author StreamWeavers
- * @notice Milestone 1: Foundational Architecture
+ * @notice Milestone 2: Dynamic Stream Allocation Engine
  * This contract establishes the base for time-based asset distribution on Celo.
  */
 contract CeloStreaming is Ownable, ReentrancyGuard {
@@ -49,5 +49,34 @@ contract CeloStreaming is Ownable, ReentrancyGuard {
         } else {
             return IERC20(token).balanceOf(address(this));
         }
+    }
+
+    /**
+     * @notice Milestone 2: Create or Update a stream for a specific recipient.
+     * @param _recipient The address that will be able to withdraw funds.
+     * @param _cap The total amount of tokens/CELO available for the full duration.
+     * @param _unlockDuration The time in seconds it takes for the full cap to be available.
+     * @param _tokenAddress The contract address of the asset (address(0) for CELO).
+     */
+    function addStream(
+        address _recipient, 
+        uint256 _cap, 
+        uint256 _unlockDuration, 
+        address _tokenAddress
+    ) external onlyOwner {
+        require(_recipient != address(0), "StreamWeavers: Invalid recipient");
+        require(_cap > 0, "StreamWeavers: Cap must be greater than 0");
+        require(_unlockDuration > 0, "StreamWeavers: Duration must be greater than 0");
+
+        // Storing the individual parameters in the mapping
+        // We set lastWithdrawal to the current block.timestamp so the stream starts "now"
+        streams[_recipient] = Stream({
+            cap: _cap,
+            unlockDuration: _unlockDuration,
+            lastWithdrawal: block.timestamp,
+            tokenAddress: _tokenAddress
+        });
+
+        emit AddStream(_recipient, _cap, _unlockDuration, _tokenAddress);
     }
 }
