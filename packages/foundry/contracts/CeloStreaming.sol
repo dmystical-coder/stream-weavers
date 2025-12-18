@@ -127,4 +127,40 @@ contract CeloStreaming is Ownable, ReentrancyGuard {
         // Safety: Ensure we never return more than the total cap
         return unlocked > stream.cap ? stream.cap : unlocked;
     }
+
+    /**
+     * @notice Milestone 3: The 'Time-Shift' Withdrawal mechanism.
+     * @param _amount The amount the user wishes to withdraw.
+     */
+    function withdraw(uint256 _amount) external nonReentrant {
+        Stream storage stream = streams[msg.sender];
+        require(stream.cap > 0, "StreamWeavers: No active stream");
+
+        uint256 available = unlockedBalance(msg.sender);
+        require(_amount <= available, "StreamWeavers: Amount exceeds unlocked balance");
+        require(_amount > 0, "StreamWeavers: Cannot withdraw zero");
+
+        // THE TIME-SHIFT MATH
+        // We move the 'lastWithdrawal' timestamp forward by the amount of time 
+        // that 'bought' the amount being withdrawn.
+        // TimeToShift = (AmountTaken * TotalDuration) / TotalCap
+        uint256 timeToShift = (_amount * stream.unlockDuration) / stream.cap;
+        stream.lastWithdrawal += timeToShift;
+
+        // Perform the asset transfer
+        if (stream.tokenAddress == address(0)) {
+            require(address(this).balance >= _amount, "StreamWeavers: Insufficient CELO in treasury");
+            (bool success, ) = payable(msg.sender).call{value: _amount}("");
+            require(success, "StreamWeavers: CELO transfer failed");
+        } else {
+            require(
+                IERC20(stream.tokenAddress).balanceOf(address(this)) >= _amount, 
+                "StreamWeavers: Insufficient tokens in treasury"
+            );
+            bool success = IERC20(stream.tokenAddress).transfer(msg.sender, _amount);
+            require(success, "StreamWeavers: Token transfer failed");
+        }
+
+        emit Withdraw(msg.sender, _amount, stream.tokenAddress);
+    }
 }
