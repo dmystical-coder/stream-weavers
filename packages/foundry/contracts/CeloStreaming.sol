@@ -108,4 +108,23 @@ contract CeloStreaming is Ownable, ReentrancyGuard {
             emit AddStream(_recipients[i], _caps[i], _durations[i], _tokens[i]);
         }
     }
+
+    /**
+     * @notice Milestone 3: Calculate the current withdrawable balance for a user.
+     * @param _user The address of the stream recipient.
+     * @return The amount of tokens/CELO currently unlocked.
+     */
+    function unlockedBalance(address _user) public view returns (uint256) {
+        Stream memory stream = streams[_user];
+        if (stream.cap == 0) return 0;
+
+        uint256 timeElapsed = block.timestamp - stream.lastWithdrawal;
+        
+        // Formula: (Cap * TimeElapsed) / TotalDuration
+        // We multiply before dividing to maintain maximum precision in Solidity
+        uint256 unlocked = (stream.cap * timeElapsed) / stream.unlockDuration;
+        
+        // Safety: Ensure we never return more than the total cap
+        return unlocked > stream.cap ? stream.cap : unlocked;
+    }
 }
