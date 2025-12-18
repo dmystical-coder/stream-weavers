@@ -79,4 +79,32 @@ contract CeloStreaming is Ownable, ReentrancyGuard {
 
         emit AddStream(_recipient, _cap, _unlockDuration, _tokenAddress);
     }
+
+    /**
+     * @notice Milestone 2: Batch Add Streams (Efficiency Enhancement)
+     * Allows the owner to set up multiple contributors in one transaction.
+     */
+    function batchAddStreams(
+        address[] calldata _recipients,
+        uint256[] calldata _caps,
+        uint256[] calldata _durations,
+        address[] calldata _tokens
+    ) external onlyOwner {
+        require(_recipients.length == _caps.length && _caps.length == _durations.length && _durations.length == _tokens.length, "StreamWeavers: Length mismatch");
+        
+        for (uint256 i = 0; i < _recipients.length; i++) {
+            require(_recipients[i] != address(0), "StreamWeavers: Invalid recipient");
+            require(_caps[i] > 0, "StreamWeavers: Cap must be greater than 0");
+            require(_durations[i] > 0, "StreamWeavers: Duration must be greater than 0");
+
+            streams[_recipients[i]] = Stream({
+                cap: _caps[i],
+                unlockDuration: _durations[i],
+                lastWithdrawal: block.timestamp,
+                tokenAddress: _tokens[i]
+            });
+
+            emit AddStream(_recipients[i], _caps[i], _durations[i], _tokens[i]);
+        }
+    }
 }
