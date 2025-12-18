@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 /**
  * @title CeloStreaming
  * @author StreamWeavers
- * @notice Milestone 2: Dynamic Stream Allocation Engine
+ * @notice Milestone 3: Continuous Withdrawal Logic
  * This contract establishes the base for time-based asset distribution on Celo.
  */
 contract CeloStreaming is Ownable, ReentrancyGuard {
@@ -25,6 +25,7 @@ contract CeloStreaming is Ownable, ReentrancyGuard {
 
     event FundsReceived(address indexed sender, uint256 amount);
     event AddStream(address indexed recipient, uint256 cap, uint256 duration, address token);
+    event Withdraw(address indexed user, uint256 amount, address token);
 
     /**
      * @notice Initializes the contract and sets the deployer as the owner.
