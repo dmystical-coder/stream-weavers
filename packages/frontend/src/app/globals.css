@@ -1,0 +1,483 @@
+@import "tailwindcss";
+
+/* StreamWeaver Design System */
+:root {
+  /* Celo Brand Colors */
+  --celo-gold: #FCFF52;
+  --celo-green: #35D07F;
+  --celo-dark: #1E002B;
+  --celo-violet: #5145D5;
+  
+  /* Dark Theme */
+  --background: #0D0D0D;
+  --background-secondary: #1A1A1A;
+  --background-card: #141414;
+  --foreground: #FAFAFA;
+  --foreground-muted: #A3A3A3;
+  --border: #2A2A2A;
+  --accent: var(--celo-gold);
+  --success: var(--celo-green);
+  --error: #EF4444;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Layout */
+.dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--background-secondary);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--celo-gold), var(--celo-green));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+/* Balance Display */
+.balance-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.balance-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.streaming-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--celo-green);
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.balance-value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono), monospace;
+  line-height: 1.2;
+  transition: all 0.15s ease;
+}
+
+.balance-pulse {
+  text-shadow: 0 0 30px var(--celo-green);
+}
+
+.balance-whole {
+  color: var(--foreground);
+}
+
+.balance-decimal {
+  color: var(--foreground-muted);
+  font-size: 2rem;
+}
+
+.balance-currency {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--celo-gold);
+  font-weight: 600;
+}
+
+.balance-subtext {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--foreground-muted);
+}
+
+/* Stream Card */
+.stream-card {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.stream-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.stream-card-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.stream-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-celo {
+  background: rgba(252, 255, 82, 0.15);
+  color: var(--celo-gold);
+}
+
+.badge-token {
+  background: rgba(81, 69, 213, 0.15);
+  color: var(--celo-violet);
+}
+
+/* Progress Bar */
+.stream-progress {
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--celo-green), var(--celo-gold));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--foreground-muted);
+}
+
+/* Stream Details */
+.stream-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
+  color: var(--foreground-muted);
+  font-size: 0.875rem;
+}
+
+.detail-value {
+  font-weight: 500;
+  font-family: var(--font-mono), monospace;
+}
+
+.detail-value.highlight {
+  color: var(--celo-green);
+}
+
+/* Withdraw Section */
+.stream-withdraw {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.withdraw-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.withdraw-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.875rem;
+}
+
+.withdraw-input:focus {
+  outline: none;
+  border-color: var(--celo-gold);
+}
+
+.max-button {
+  padding: 0.75rem 1rem;
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--celo-gold);
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.max-button:hover {
+  background: var(--border);
+}
+
+.withdraw-button {
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, var(--celo-gold), var(--celo-green));
+  border: none;
+  border-radius: 8px;
+  color: var(--background);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.withdraw-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(252, 255, 82, 0.3);
+}
+
+.withdraw-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.success-message {
+  text-align: center;
+  color: var(--celo-green);
+  font-size: 0.875rem;
+}
+
+/* Empty States */
+.stream-card-empty,
+.stream-card-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.stream-card-empty h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.stream-card-empty p {
+  color: var(--foreground-muted);
+  font-size: 0.875rem;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--celo-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Wallet Connect Buttons */
+.connect-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--celo-gold), var(--celo-green));
+  border: none;
+  border-radius: 12px;
+  color: var(--background);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.connect-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(252, 255, 82, 0.3);
+}
+
+.connect-button.wrong-network {
+  background: var(--error);
+}
+
+.connect-icon {
+  font-size: 1.25rem;
+}
+
+.wallet-connected {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chain-button,
+.account-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chain-button:hover,
+.account-button:hover {
+  background: var(--border);
+}
+
+.chain-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--foreground), var(--celo-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  color: var(--foreground-muted);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Footer */
+.footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--foreground-muted);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: var(--celo-gold);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .balance-value {
+    font-size: 2.5rem;
+  }
+  
+  .balance-decimal {
+    font-size: 1.5rem;
+  }
+  
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .stream-card {
+    max-width: 100%;
+  }
+}
